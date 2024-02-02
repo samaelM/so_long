@@ -1,7 +1,7 @@
 CFLAGS = -Wall -Wextra -Werror
 MLXFLAGS = -Lmlx -lmlx -L/usr/lib/X11 -lXext -lX11
 NAME = so_long
-SRC = main.c
+SRC = main.c ft_map.c gnl/get_next_line.c gnl/get_next_line_utils.c
 OBJETS = $(SRC:.c=.o)
 
 all :	minilibx $(NAME) 
