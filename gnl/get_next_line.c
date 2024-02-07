@@ -6,13 +6,13 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 09:04:45 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/01/22 14:58:50 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/02/07 12:07:41 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	ft_strjoinlst(t_list **s1, char const *s2)
+int	ft_strjoinlst(t_list **s1, char const *s2)
 {
 	size_t	i;
 	t_list	*temp;
@@ -25,6 +25,8 @@ void	ft_strjoinlst(t_list **s1, char const *s2)
 	while (s2[i])
 	{
 		temp = ft_lstnew(s2[i]);
+		if (!temp)
+			return (0);
 		if (*s1)
 			(*s1)->next = temp;
 		else
@@ -32,6 +34,7 @@ void	ft_strjoinlst(t_list **s1, char const *s2)
 		s1 = &(*s1)->next;
 		i++;
 	}
+	return (1);
 }
 
 t_list	*ft_lstlast(t_list *lst)
@@ -103,7 +106,8 @@ char	*get_next_line(int fd)
 		if (!*buff || n <= 0)
 			break ;
 		(n)[buff] = 0;
-		ft_strjoinlst(&stash, buff);
+		if (!ft_strjoinlst(&stash, buff))
+			return (NULL);
 	}
 	free(buff);
 	if (stash == NULL)

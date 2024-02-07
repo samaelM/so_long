@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:30:39 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/02/02 15:49:47 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/02/07 18:25:02 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 
 # define WIN_NAME "fenetre tres cool"
 
-# define WIN_LENGHT 1080
-# define WIN_HEIGHT 1080
+# define WIN_LENGHT 1900
+# define WIN_HEIGHT 1500
 
 # define RED 0x00ff0000
 # define GREEN 0x0000ff00
@@ -41,7 +41,8 @@
 
 # define SQUARE 100
 
-# define DEBUG write(1, "\nDEBUG\n", 7);
+# define DEBUG write(1, "\nDEBUGi\n", 8);
+# define DEBUG2 write(1, "\nDEBUG-j--\n", 11);
 
 typedef enum Bool
 {
@@ -52,25 +53,24 @@ typedef enum Bool
 typedef struct s_data
 {
 	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
+	int		height;
+	int		lenght;
 }			t_data;
 
 typedef struct s_map
 {
 	char	**map;
+	void	***pmap;
 	size_t	size;
 	int		c;
 	int		e;
 	int		p;
-	t_data *img;
+	t_data	*img;
 }			t_map;
 
 typedef struct s_mc
 {
-	t_data	texture;
+	t_data	*texture;
 	int		x;
 	int		y;
 	int		c;
@@ -80,12 +80,26 @@ typedef struct s_vars
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
-	t_data	*img;
+	t_data	*wall;
+	t_data	*exit;
+	t_data	*floor;
+	t_data	*coin;
 	t_mc	*mc;
 	t_map	*map;
 }			t_vars;
 
 void		ft_convmap(t_vars *data);
 void		ft_freetab(char **s, int size);
+int			on_destroy(t_vars *data);
+int			on_keypress(int keysym, t_vars *data);
+void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void		ft_square(t_vars *data, int width, int posx, int posy, int color);
+void		ft_create_mc(t_vars *data, int x, int y);
+void		ft_updatemap(t_vars *data);
+void		ft_create_map(t_vars *data);
+size_t		ft_strlennl(char *s);
+int			ft_max(int a, int b);
+int			ft_min(int a, int b);
+void	ft_print_mlx(t_vars *data, void *img, int x, int y);
 
 #endif

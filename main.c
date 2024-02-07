@@ -6,81 +6,11 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:56:52 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/02/02 16:47:58 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/02/07 18:24:47 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-int	ft_max(int a, int b)
-{
-	return ((a > b) ? a : b);
-}
-int	ft_min(int a, int b)
-{
-	return ((a > b) ? b : a);
-}
-
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
-}
-
-void	ft_square(t_vars *data, int width, int posx, int posy, int color)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (i < width)
-	{
-		j = 0;
-		while (j < width)
-		{
-			if (i +posx < WIN_LENGHT && i >= 0 && j + posy < WIN_HEIGHT && j >= 0)
-				my_mlx_pixel_put(data->map->img, posx + i, posy + j, color);
-			j++;
-		}
-		i++;
-	}
-	// mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-		// data->map->img->img,
-	// 	0, 0);
-}
-
-int	on_destroy(t_vars *data)
-{
-	ft_freetab(data->map->map, data->map->size);
-	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-	mlx_destroy_display(data->mlx_ptr);
-	free(data->mlx_ptr);
-	exit(0);
-	return (0);
-}
-
-int	mouse_hook(int button, int x, int y, t_vars *data)
-{
-	if (button == 1)
-	{
-		write(1, "oui", 3);
-		ft_square(data, 100, x - 50, y - 50, BLUE);
-		// mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-		// 	data->map->img->img, 0, 0);
-	}
-	if (button == 2)
-		ft_square(data, 100, x - 50, y - 50, RED);
-	if (button == 3)
-		ft_square(data, 100, x - 50, y - 50, GREEN);
-	if (button == 4)
-		ft_square(data, 100, x - 50, y - 50, WHITE);
-	if (button == 5)
-		ft_square(data, 100, x - 50, y - 50, NICE);
-	return (1);
-}
 
 void	ft_create_mc(t_vars *data, int x, int y)
 {
@@ -92,107 +22,129 @@ void	ft_create_mc(t_vars *data, int x, int y)
 
 	aa = 0, bb = 0;
 	a = &aa, b = &bb;
-	img.img = mlx_xpm_file_to_image(data->mlx_ptr, "./assets/teapot.xpm", a, b);
-	data->img = &img;
-	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img->img, x, y);
+	img.img = mlx_xpm_file_to_image(data->mlx_ptr, "mlx/test/open24.xpm", a, b);
+	data->mc->texture = &img;
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+		data->mc->texture->img, x, y);
 	data->mc->x = x;
 	data->mc->y = y;
 }
+
 void	ft_updatemap(t_vars *data)
 {
-	// DEBUG
-	if (data->map->img->img)
-		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-			data->map->img->img, 0, 0);
+	if (data->wall->img)
+	{
+		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->wall->img,
+			0, 0);
+	}
 }
+
+void	ft_print_mlx(t_vars *data, void *img, int x, int y)
+{
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img, ft_min(x,
+			WIN_LENGHT), ft_min(y, WIN_HEIGHT));
+}
+
 void	ft_create_map(t_vars *data)
 {
 	int		i;
 	size_t	j;
-	t_data	img;
+	int		aa;
+	int		bb;
+	int		*a;
+	int		*b;
 
-	img.img = mlx_new_image(data->mlx_ptr, WIN_HEIGHT, WIN_LENGHT);
-	data->map->img = &img;
-	data->map->img->addr = mlx_get_data_addr(data->map->img->img,
-			&data->map->img->bits_per_pixel, &data->map->img->line_length,
-			&data->map->img->endian);
-	ft_square(data, WIN_HEIGHT, 0, 0, BLACK);
+	aa = 0, bb = 0;
+	a = &aa, b = &bb;
 	j = 0;
 	while (j < data->map->size)
 	{
 		i = 0;
-		while (data->map->map[j][i])
+		while (data->map->map[j][i] != '\0' && data->map->map[j][i] != '\n')
 		{
 			if (data->map->map[j][i] == '1')
-				ft_square(data, 50, 1 + 50 * i, 1 + 50 * j, WHITE);
-			if (data->map->map[j][i] == 'C')
-				ft_square(data, 50, 1 + 50 * i, 1 + 50 * j, YELLOW);
-			if (data->map->map[j][i] == 'E')
-				ft_square(data, 50, 1 + 50 * i, 1 + 50 * j, BLUE);
-			if (data->map->map[j][i] == 'P')
-				ft_square(data, 50, 1 + 50 * i, 1 + 50 * j, GREEN);
+				ft_print_mlx(data, data->wall->img, i * data->wall->height, j
+					* data->wall->lenght);
+			else if (data->map->map[j][i] == 'C')
+				ft_print_mlx(data, data->coin->img, i * data->floor->height, j
+					* data->floor->lenght);
+			else if (data->map->map[j][i] == 'E')
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+					data->wall->img, ft_min(i * data->wall->height, WIN_HEIGHT),
+					ft_min(j * data->wall->lenght, WIN_HEIGHT));
+			else if (data->map->map[j][i] == '0')
+				ft_print_mlx(data, data->floor->img, i * data->floor->height, j
+					* data->floor->lenght);
+			else if (data->map->map[j][i] == 'P')
+			{
+				ft_print_mlx(data, data->mc->texture->img, i
+					* data->mc->texture->height, j * data->mc->texture->lenght);
+				data->mc->x = j;
+				data->mc->y = i;
+			}
 			i++;
 		}
 		j++;
 	}
-	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->map->img->img,
-		0, 0);
-	// ft_square(data, SQUARE, 10, 10, BLUE);
-	// ft_square(data, SQUARE, 110, 10, GREEN);
-	// ft_square(data, SQUARE, 10, 110, RED);
-	// ft_square(data, SQUARE, 110, 110, WHITE);
 }
-
-int	on_keypress(int keysym, t_vars *data)
+void	ft_texture_init(t_vars *data)
 {
-	printf("%d", (1 && data->map->img->img));
-	if (keysym == 65363)
-	{
-		ft_updatemap(data);
-		ft_create_mc(data, data->mc->x + 100, data->mc->y);
-	}
-	if (keysym == 65361)
-	{
-		ft_updatemap(data);
-		ft_create_mc(data, data->mc->x - 100, data->mc->y);
-	}
-	if (keysym == 65362)
-	{
-		ft_updatemap(data);
-		ft_create_mc(data, data->mc->x, data->mc->y - 100);
-	}
-	if (keysym == 65364)
-	{
-		ft_updatemap(data);
-		ft_create_mc(data, data->mc->x, data->mc->y + 100);
-	}
-	if (keysym == 0xff1b)
-		on_destroy(data);
-	return (0);
+	t_mc	*mc;
+	t_data	*wall;
+	t_data	*texture;
+	t_data	*floor;
+	t_data	*coin;
+	int		a;
+	int		b;
+
+	wall = (t_data *)malloc(sizeof(*wall));
+	wall->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/textur.xpm", &a,
+			&b);
+	data->wall = wall;
+	data->wall->height = a;
+	data->wall->lenght = b;
+	mc = (t_mc *)malloc(sizeof(*mc));
+	data->mc = mc;
+	texture = (t_data *)malloc(sizeof(*texture));
+	texture->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/textures.xpm",
+			&a, &b);
+	data->mc->texture = texture;
+	data->mc->texture->height = a;
+	data->mc->texture->lenght = b;
+	floor = (t_data *)malloc(sizeof(*floor));
+	floor->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/floor.xpm",
+			&a, &b);
+	data->floor = floor;
+	data->floor->height = a;
+	data->floor->lenght = b;
+	coin = (t_data *)malloc(sizeof(*coin));
+	coin->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/coin.xpm",
+			&a, &b);
+	data->coin = coin;
+	data->coin->height = a;
+	data->coin->lenght = b;
 }
 int	main(void)
 {
 	t_vars	data;
 	t_map	map;
-	t_mc	mc;
 
-	data.mc = &mc;
-	data.map = &map;
-	ft_convmap(&data);
 	data.mlx_ptr = mlx_init();
 	if (!data.mlx_ptr)
 		return (1);
+	data.map = &map;
+	ft_convmap(&data);
+	write(1, "map loaded\n", 11);
 	data.win_ptr = mlx_new_window(data.mlx_ptr, WIN_LENGHT, WIN_HEIGHT,
 			WIN_NAME);
 	if (!data.win_ptr)
 		return (free(data.mlx_ptr), 1);
+	ft_texture_init(&data);
+	write(1, "textures loaded", 15);
 	ft_create_map(&data);
-	ft_create_mc(&data, 0, 0);
-	printf("%d", (1 && data.map->img->img));
 	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &on_keypress, &data);
 	mlx_hook(data.win_ptr, DestroyNotify, StructureNotifyMask, &on_destroy,
 		&data);
-	mlx_mouse_hook(data.win_ptr, mouse_hook, &data);
 	mlx_loop(data.mlx_ptr);
 	return (0);
 }

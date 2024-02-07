@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 16:05:18 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/02/02 15:15:51 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:40:34 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ t_Bool	ft_check3(char *s)
 }
 t_Bool	ft_check4(char *s)
 {
-	if (s[0] != '1' || s[ft_strlennl(s) - 1] != '1')
+	if ( s[0] != '1' || s[ft_strlennl(s) - 1] != '1')
 		return (False);
 	return (True);
 }
@@ -156,7 +156,6 @@ void	ft_freetab(char **s, int size)
 	i = 0;
 	while (i < size)
 	{
-		// printf("ligne %d effacee\n", i);
 		free(s[i]);
 		i++;
 	}
@@ -180,13 +179,6 @@ void	ft_convmap(t_vars *data)
 		map[i++] = get_next_line(fd);
 	}
 	close(fd);
-	i = 0;
-	while (i < nline)
-	{
-		printf("%s", map[i]);
-		i++;
-	}
-	printf("\n");
 	data->map->map = map;
 	data->map->size = nline;
 	ft_check(data);
