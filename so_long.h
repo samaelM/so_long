@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:30:39 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/02/07 18:25:02 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:56:24 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void		ft_create_map(t_vars *data);
 size_t		ft_strlennl(char *s);
 int			ft_max(int a, int b);
 int			ft_min(int a, int b);
-void	ft_print_mlx(t_vars *data, void *img, int x, int y);
+void		ft_print_mlx(t_vars *data, void *img, int x, int y);
+int	ft_ultimate_check(char **map);
 
 #endif

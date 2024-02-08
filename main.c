@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:56:52 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/02/07 18:24:47 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/02/08 15:21:34 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ void	ft_create_map(t_vars *data)
 					* data->floor->lenght);
 			else if (data->map->map[j][i] == 'E')
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->wall->img, ft_min(i * data->wall->height, WIN_HEIGHT),
-					ft_min(j * data->wall->lenght, WIN_HEIGHT));
+					data->exit->img, ft_min(i * data->exit->height, WIN_HEIGHT),
+					ft_min(j * data->exit->lenght, WIN_HEIGHT));
 			else if (data->map->map[j][i] == '0')
 				ft_print_mlx(data, data->floor->img, i * data->floor->height, j
 					* data->floor->lenght);
@@ -94,11 +94,13 @@ void	ft_texture_init(t_vars *data)
 	t_data	*texture;
 	t_data	*floor;
 	t_data	*coin;
+	t_data	*exit;
+	// t_data	*test;
 	int		a;
 	int		b;
 
 	wall = (t_data *)malloc(sizeof(*wall));
-	wall->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/textur.xpm", &a,
+	wall->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/wall.xpm", &a,
 			&b);
 	data->wall = wall;
 	data->wall->height = a;
@@ -106,26 +108,38 @@ void	ft_texture_init(t_vars *data)
 	mc = (t_mc *)malloc(sizeof(*mc));
 	data->mc = mc;
 	texture = (t_data *)malloc(sizeof(*texture));
-	texture->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/textures.xpm",
+	texture->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/mc_texture.xpm",
 			&a, &b);
 	data->mc->texture = texture;
 	data->mc->texture->height = a;
 	data->mc->texture->lenght = b;
 	floor = (t_data *)malloc(sizeof(*floor));
-	floor->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/floor.xpm",
-			&a, &b);
+	floor->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/floor.xpm", &a,
+			&b);
 	data->floor = floor;
 	data->floor->height = a;
 	data->floor->lenght = b;
 	coin = (t_data *)malloc(sizeof(*coin));
-	coin->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/coin.xpm",
-			&a, &b);
+	coin->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/test.xpm", &a, &b);
 	data->coin = coin;
 	data->coin->height = a;
 	data->coin->lenght = b;
+	exit = (t_data *)malloc(sizeof(*exit));
+	exit->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/exit.xpm", &a, &b);
+	data->exit = exit;
+	data->exit->height = a;
+	data->exit->lenght = b;
+	// test = (t_data *)malloc(sizeof(*test));
+	// test->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/test.xpm", &a, &b);
+	// // data->test = test;
+	// // data->test->height = a;
+	// // data->test->lenght = b;
+	// printf("%d -- %d", a, b);
+	// ft_print_mlx(data, test->img, 1000,1000);
 }
 int	main(void)
 {
+	// ft_ultimate_check();
 	t_vars	data;
 	t_map	map;
 
@@ -140,7 +154,7 @@ int	main(void)
 	if (!data.win_ptr)
 		return (free(data.mlx_ptr), 1);
 	ft_texture_init(&data);
-	write(1, "textures loaded", 15);
+	write(1, "textures loaded\n", 15);
 	ft_create_map(&data);
 	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &on_keypress, &data);
 	mlx_hook(data.win_ptr, DestroyNotify, StructureNotifyMask, &on_destroy,
