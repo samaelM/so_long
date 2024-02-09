@@ -6,38 +6,11 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:56:52 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/02/08 15:21:34 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:53:20 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-void	ft_create_mc(t_vars *data, int x, int y)
-{
-	int		aa;
-	int		bb;
-	int		*a;
-	int		*b;
-	t_data	img;
-
-	aa = 0, bb = 0;
-	a = &aa, b = &bb;
-	img.img = mlx_xpm_file_to_image(data->mlx_ptr, "mlx/test/open24.xpm", a, b);
-	data->mc->texture = &img;
-	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-		data->mc->texture->img, x, y);
-	data->mc->x = x;
-	data->mc->y = y;
-}
-
-void	ft_updatemap(t_vars *data)
-{
-	if (data->wall->img)
-	{
-		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->wall->img,
-			0, 0);
-	}
-}
 
 void	ft_print_mlx(t_vars *data, void *img, int x, int y)
 {
@@ -49,13 +22,7 @@ void	ft_create_map(t_vars *data)
 {
 	int		i;
 	size_t	j;
-	int		aa;
-	int		bb;
-	int		*a;
-	int		*b;
 
-	aa = 0, bb = 0;
-	a = &aa, b = &bb;
 	j = 0;
 	while (j < data->map->size)
 	{
@@ -69,9 +36,8 @@ void	ft_create_map(t_vars *data)
 				ft_print_mlx(data, data->coin->img, i * data->floor->height, j
 					* data->floor->lenght);
 			else if (data->map->map[j][i] == 'E')
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
-					data->exit->img, ft_min(i * data->exit->height, WIN_HEIGHT),
-					ft_min(j * data->exit->lenght, WIN_HEIGHT));
+				ft_print_mlx(data, data->exit->img, i * data->wall->height, j
+					* data->exit->lenght);
 			else if (data->map->map[j][i] == '0')
 				ft_print_mlx(data, data->floor->img, i * data->floor->height, j
 					* data->floor->lenght);
@@ -87,24 +53,42 @@ void	ft_create_map(t_vars *data)
 		j++;
 	}
 }
+
+int	ft_load_texture(t_vars *data, t_data *image, char *direction)
+{
+	t_data	*e;
+	int		a;
+	int		b;
+
+	e = (t_data *)malloc(sizeof(*e));
+	if (!e)
+		return (0);
+	e->img = mlx_xpm_file_to_image(data->mlx_ptr, direction, &a, &b);
+	image = e;
+	image->height = a;
+	image->lenght = b;
+	return (1);
+}
 void	ft_texture_init(t_vars *data)
 {
 	t_mc	*mc;
-	t_data	*wall;
 	t_data	*texture;
 	t_data	*floor;
 	t_data	*coin;
 	t_data	*exit;
-	// t_data	*test;
 	int		a;
 	int		b;
 
+	t_data	*wall;
 	wall = (t_data *)malloc(sizeof(*wall));
 	wall->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/wall.xpm", &a,
 			&b);
 	data->wall = wall;
 	data->wall->height = a;
 	data->wall->lenght = b;
+	// ft_load_texture(data, data->wall, "assets/wall.xpm");
+	// printf("%d, %d", data->wall->height, data->wall->lenght);
+	// sleep(2);
 	mc = (t_mc *)malloc(sizeof(*mc));
 	data->mc = mc;
 	texture = (t_data *)malloc(sizeof(*texture));
@@ -129,17 +113,9 @@ void	ft_texture_init(t_vars *data)
 	data->exit = exit;
 	data->exit->height = a;
 	data->exit->lenght = b;
-	// test = (t_data *)malloc(sizeof(*test));
-	// test->img = mlx_xpm_file_to_image(data->mlx_ptr, "assets/test.xpm", &a, &b);
-	// // data->test = test;
-	// // data->test->height = a;
-	// // data->test->lenght = b;
-	// printf("%d -- %d", a, b);
-	// ft_print_mlx(data, test->img, 1000,1000);
 }
 int	main(void)
 {
-	// ft_ultimate_check();
 	t_vars	data;
 	t_map	map;
 
@@ -156,7 +132,9 @@ int	main(void)
 	ft_texture_init(&data);
 	write(1, "textures loaded\n", 15);
 	ft_create_map(&data);
-	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &on_keypress, &data);
+	data.mc->c = 0;
+	data.cpt = 0;
+	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &on_keypress, &data);
 	mlx_hook(data.win_ptr, DestroyNotify, StructureNotifyMask, &on_destroy,
 		&data);
 	mlx_loop(data.mlx_ptr);

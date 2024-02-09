@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:30:39 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/02/08 16:56:24 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:47:05 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define WIN_NAME "fenetre tres cool"
+# define WIN_NAME "42 lore"
 
 # define WIN_LENGHT 1900
 # define WIN_HEIGHT 1500
@@ -86,6 +86,7 @@ typedef struct s_vars
 	t_data	*coin;
 	t_mc	*mc;
 	t_map	*map;
+	long long cpt;
 }			t_vars;
 
 void		ft_convmap(t_vars *data);
