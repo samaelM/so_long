@@ -6,193 +6,126 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 16:05:18 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/02/09 13:12:13 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:35:00 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-size_t	ft_strlennl(char *s)
+t_Bool	ft_check(t_map *data)
 {
-	int	i;
-
-	i = 0;
-	while (s && s[i] && s[i] != '\n')
-		i++;
-	return (i);
-}
-t_Bool	ft_check1(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s && s[i])
-	{
-		if (!(s[i] == '0' || s[i] == '1' || s[i] == 'C' || s[i] == 'E'
-				|| s[i] == 'P' || s[i] == '\n'))
-			return (False);
-		i++;
-	}
-	return (True);
-}
-
-int	ft_countchr(char *s, char c)
-{
-	int	i;
-	int	n;
-
-	i = 0;
-	n = 0;
-	while (s && s[i])
-	{
-		if (s[i] == c)
-			n++;
-		i++;
-	}
-	return (n);
-}
-
-t_Bool	ft_check2(t_vars *data, char *s, t_Bool last_line)
-{
-	data->map->c += ft_countchr(s, 'C');
-	data->map->e += ft_countchr(s, 'E');
-	data->map->p += ft_countchr(s, 'P');
-	if (data->map->e > 1)
-		return (False);
-	if (last_line)
-	{
-		if (data->map->e > 1 || data->map->c < 1 || data->map->p != 1)
-			return (False);
-	}
-	return (True);
-}
-t_Bool	ft_check3(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] && s[i] != '\n')
-	{
-		if (s[i] != '1')
-			return (False);
-		i++;
-	}
-	return (True);
-}
-t_Bool	ft_check4(char *s)
-{
-	if (s[0] != '1' || s[ft_strlennl(s) - 1] != '1')
-		return (False);
-	return (True);
-}
-
-int	ft_count_line(void)
-{
-	int		fd;
-	char	*line;
-	int		n;
-
-	fd = open(MAP, O_RDWR);
-	line = get_next_line(fd);
-	n = 0;
-	if (!line)
-		n = -1;
-	while (line)
-	{
-		free(line);
-		line = get_next_line(fd);
-		n++;
-	}
-	close(fd);
-	return (n);
-}
-t_Bool	ft_check(t_vars *data)
-{
-	size_t	line_length;
 	size_t	i;
+	char	**temp;
 
 	i = 0;
-	line_length = ft_strlennl(data->map->map[i]);
-	if (!ft_check1(data->map->map[i]) || !ft_check2(data, data->map->map[i],
-			False) || !ft_check3(data->map->map[i]))
-	{
-		printf("CHARACTER PROBLEM\nEXITING THE PROGRAM\n");
+	if (!ft_check3(data->map[i]))
 		return (False);
-	}
-	while (i < data->map->size)
+	while (i < data->size)
 	{
-		if (!ft_check1(data->map->map[i]) || !ft_check2(data, data->map->map[i],
-				False) || !ft_check4(data->map->map[i]))
-		{
-			printf("CHARACTER PROBLEM\nEXITING THE PROGRAM\n");
+		if (!ft_check1(data->map[i]) || !ft_check2(data, data->map[i], False)
+			|| !ft_check4(data->map[i]))
 			return (False);
-		}
-		if (line_length != ft_strlennl(data->map->map[i]))
-		{
-			printf("\nNON AUTHORIZED SHAPE\nEXITING THE PROGRAM\n");
-			return (False);
-		}
+		if (data->lenght != ft_strlennl(data->map[i]))
+			return (ft_printerror(ERROR0));
 		i++;
 	}
-	if (!ft_check2(data, data->map->map[i - 1], True)
-		|| !ft_check3(data->map->map[i - 1]))
-	{
-		printf("Error\n");
+	if (!ft_check2(data, data->map[i - 1], True) || !ft_check3(data->map[i
+				- 1]))
 		return (False);
-	}
-	return (True);
+	temp = ft_doubletabdup(data->map, data->size);
+	if (!temp)
+		return (False);
+	if (!ft_floodfill_check(temp, data->size, data->c))
+		return (ft_freetab(temp, data->size), False);
+	return (ft_freetab(temp, data->size), True);
 }
 
-void	ft_freetab(char **s, int size)
+char	**ft_copymap(t_map *tmap, char *path)
 {
-	int	i;
-
-	i = 0;
-	while (i < size)
-	{
-		free(s[i]);
-		i++;
-	}
-	free(s);
-}
-
-void	ft_convmap(t_vars *data)
-{
-	int		fd;
-	int		i;
 	char	**map;
 	int		nline;
+	int		fd;
+	int		i;
 
-	nline = ft_count_line();
+	nline = ft_count_line(tmap, path);
 	if (nline == -1)
-		(mlx_destroy_display(data->mlx_ptr), free(data->mlx_ptr), exit(0));
+		(ft_printerror(ERROR10),ft_freeandexit(tmap));
 	map = (char **)malloc(nline * sizeof(char *));
 	if (!map)
-		(mlx_destroy_display(data->mlx_ptr), free(data->mlx_ptr), exit(0));
-	fd = open(MAP, O_RDWR);
+		ft_freeandexit(tmap);
+	fd = open(path, O_RDWR);
 	i = 0;
 	map[i++] = get_next_line(fd);
 	if (map[0] == NULL)
-		(mlx_destroy_display(data->mlx_ptr), free(data->mlx_ptr), exit(0));
+		ft_freeandexit(tmap);
 	while (i < nline)
 	{
 		map[i++] = get_next_line(fd);
 		if (map[i - 1] == NULL)
-		{
-			ft_freetab(map, ft_min(0, i - 2));
-			(mlx_destroy_display(data->mlx_ptr), free(data->mlx_ptr), exit(0));
-		}
+			(ft_freetab(map, ft_min(0, i - 2)), ft_freeandexit(tmap));
 	}
 	close(fd);
-	data->map->map = map;
-	data->map->size = nline;
-	data->map->c = 0;
-	data->map->e = 0;
-	data->map->p = 0;
-	if (!ft_check(data))
+	tmap->size = nline;
+	return (map);
+}
+
+t_map	*ft_convmap(char *path)
+{
+	t_map	*tmap;
+
+	tmap = (t_map *)malloc(sizeof(*tmap));
+	if (!tmap)
+		exit(0);
+	tmap->map = ft_copymap(tmap, path);
+	tmap->lenght = ft_strlennl(tmap->map[0]);
+	tmap->c = 0;
+	tmap->e = 0;
+	tmap->p = 0;
+	if (!ft_check(tmap))
 	{
-		ft_freetab(data->map->map, data->map->size);
-		(mlx_destroy_display(data->mlx_ptr), free(data->mlx_ptr), exit(0));
+		ft_freetab(tmap->map, tmap->size);
+		ft_freeandexit(tmap);
 	}
-	// ft_ultimate_check(data->map->map);
+	return (tmap);
+}
+
+void	ft_mapflags(t_vars *data, char c, int i, int j)
+{
+	if (c == '1')
+		ft_print_mlx(data, data->wall->img, i * data->wall->height, j
+			* data->wall->lenght);
+	else if (c == 'C')
+		ft_print_mlx(data, data->coin->img, i * data->floor->height, j
+			* data->floor->lenght);
+	else if (c == 'E')
+		ft_print_mlx(data, data->exit->img, i * data->wall->height, j
+			* data->exit->lenght);
+	else if (c == '0')
+		ft_print_mlx(data, data->floor->img, i * data->floor->height, j
+			* data->floor->lenght);
+	else if (c == 'P')
+	{
+		ft_print_mlx(data, data->mc->texture->img, i
+			* data->mc->texture->height, j * data->mc->texture->lenght);
+		data->mc->x = j;
+		data->mc->y = i;
+	}
+}
+
+void	ft_create_map(t_vars *data)
+{
+	int		i;
+	size_t	j;
+
+	j = 0;
+	while (j < data->map->size)
+	{
+		i = 0;
+		while (data->map->map[j][i] != '\0' && data->map->map[j][i] != '\n')
+		{
+			ft_mapflags(data, data->map->map[j][i], i, j);
+			i++;
+		}
+		j++;
+	}
 }
