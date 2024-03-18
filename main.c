@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:56:52 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/02/16 15:26:46 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/03/12 14:26:15 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_texture_init(t_vars *data)
 	data->mc->texture = NULL;
 	if (!(ft_load_texture(data, &data->wall, "assets/wall.xpm")
 			&& ft_load_texture(data, &data->mc->texture,
-				"assets/mc_texture_1_.xpm") && ft_load_texture(data,
+				"assets/mc.xpm") && ft_load_texture(data,
 				&data->floor, "assets/floor.xpm") && ft_load_texture(data,
 				&data->coin, "assets/coins.xpm") && ft_load_texture(data,
 				&data->exit, "assets/exit.xpm")))

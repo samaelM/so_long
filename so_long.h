@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:30:39 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/02/20 12:32:29 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/03/13 12:34:24 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ typedef struct s_data
 typedef struct s_map
 {
 	char		**map;
-	void		***pmap;
 	size_t		size;
 	size_t		lenght;
 	int			c;

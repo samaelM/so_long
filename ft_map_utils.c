@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:40:56 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/02/20 12:39:17 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/03/13 14:15:39 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,12 @@ int	ft_count_line(t_map *tmap,char *path)
 		free(tmap);
 		exit(ft_printerror(ERROR9));
 	}
-	line = get_next_line(fd);
-	if (ft_strlen(line > 50))
-		return -1;
 	n = 0;
+	line = get_next_line(fd);
 	if (!line)
 		n = -1;
+	if (ft_strlen(line) > 50)
+		return -1;
 	while (line)
 	{
 		free(line);

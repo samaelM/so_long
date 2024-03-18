@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 09:04:45 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/02/07 12:07:41 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/03/13 13:04:08 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_strjoinlst(t_list **s1, char const *s2)
 	{
 		s1 = &(*s1)->next;
 	}
-	while (s2[i])
+	while (s2 && s2[i])
 	{
 		temp = ft_lstnew(s2[i]);
 		if (!temp)
@@ -84,7 +84,7 @@ char	*ft_line_cleaner(t_list **s)
 		*s = (*s)->next;
 		free(temp);
 	}
-	line[len] = 0;
+	line[len] = '\0';
 	return (line);
 }
 
@@ -92,20 +92,20 @@ char	*get_next_line(int fd)
 {
 	char			*buff;
 	static t_list	*stash;
-	size_t			n;
+	long long		n;
 
 	if (!stash)
 		stash = NULL;
-	buff = ft_calloc(BUFFER_SIZE + 1, 1);
+	buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!buff)
 		return (NULL);
 	n = 1;
-	while (ft_strchr(stash, '\n') == -1 && n > 0)
+	while ((ft_strchr(stash, '\n') == -1) && n > 0)
 	{
 		n = read(fd, buff, BUFFER_SIZE);
-		if (!*buff || n <= 0)
-			break ;
-		(n)[buff] = 0;
+		if (n <= 0)
+			break;
+		buff[n] = '\0';
 		if (!ft_strjoinlst(&stash, buff))
 			return (NULL);
 	}

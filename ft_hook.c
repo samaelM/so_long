@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:44 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/02/16 15:25:08 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/02/24 12:56:08 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ void	ft_freetextures(t_vars *data)
 
 int	on_destroy(t_vars *data)
 {
-	ft_freetab(data->map->map, data->map->size);
+	if (data->map)
+		ft_freetab(data->map->map, data->map->size);
 	free(data->map);
 	ft_freetextures(data);
 	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
