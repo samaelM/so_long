@@ -7,7 +7,7 @@ Hey!! this is my version of the project so_long from school 42. It's nothing inc
 ### in one line
 
 ```bash
-$> gcl https://github.com/samaelM/so_long || gcl https://github.com/42Paris/minilibx-linux so_long/mlx
+gcl https://github.com/samaelM/so_long && gcl https://github.com/42Paris/minilibx-linux so_long/mlx/
 ```
 
 ### step by step
@@ -15,19 +15,19 @@ $> gcl https://github.com/samaelM/so_long || gcl https://github.com/42Paris/mini
 you first need to download this repo :
 
 ```bash
-$> gcl https://github.com/samaelM/so_long
+gcl https://github.com/samaelM/so_long
 ```
 
 then enter the directory
 
 ```bash
-$> cd so_long
+cd so_long
 ```
 
 and finally you need to install the mlx
 
 ```bash
-$> gcl https://github.com/42Paris/minilibx-linux mlx
+gcl https://github.com/42Paris/minilibx-linux mlx
 ```
 
 ## ENJOY!
@@ -35,13 +35,13 @@ $> gcl https://github.com/42Paris/minilibx-linux mlx
 create the executable with :
 
 ```bash
-$> make
+make
 ```
 
 execute like this (maps are stored in ./maps/ and you can easily create more):
 
 ```bash
-$> ./so_long [map]
+./so_long [map]
 ```
 
 move with w,a,s,d and catch all the stars!
