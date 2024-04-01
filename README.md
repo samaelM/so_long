@@ -44,6 +44,6 @@ execute like this (maps are stored in ./maps/ and you can easily create more):
 ./so_long [map]
 ```
 
-move with w,a,s,d and catch all the stars!
+move with w,a,s,d catch all the stars and go to the exit!
 
-if encounter anny bugs please contact me at: maemaldo@student.42.fr
+if encounter any bugs please contact me at: maemaldo@student.42.fr
