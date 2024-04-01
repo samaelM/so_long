@@ -1,30 +1,76 @@
 CFLAGS = -Wall -Wextra -Werror
+
 MLXFLAGS = -Lmlx -lmlx -L/usr/lib/X11 -lXext -lX11
+
 NAME = so_long
-SRC = main.c ft_map.c gnl/get_next_line.c gnl/get_next_line_utils.c ft_hook.c ft_utils.c ft_check.c ft_map_utils.c
+
+SRC = src/main.c src/ft_map.c src/ft_hook.c src/ft_utils.c src/ft_check.c src/ft_map_utils.c
+
+LIBFT_DIR = ./src/libft/
+
+LIBFT = libft.a
+
 OBJETS = $(SRC:.c=.o)
 
-all :	minilibx $(NAME) 
+RED=\033[0;31m
 
-minilibx:
-	make -C mlx
+GREEN=\033[0;32m
+
+YELLOW=\033[0;33m
+
+WHITE=\033[0m
 
 $(NAME) : $(OBJETS)
-	cc $(CFLAGS) -o $(NAME) $(OBJETS) -Lmlx -lmlx -L/usr/lib -lXext -lX11 -g
+	@printf "$(YELLOW) TRYING TO COMPILE SO_LONG$(WHITE)"
+	@make -s libft
+	@make -s minilibx
+	@cc $(CFLAGS) -o $(NAME) $(OBJETS) $(MLXFLAGS) -g $(LIBFT_DIR)$(LIBFT)
+	@printf "\r$(GREEN)SO_LONG READY TO USE$(WHITE)"
 
-%.o:	%.c
-	cc $(CFLAGS) -c -o $@ $< -g
+all : $(NAME)
+
+minilibx:
+	@make -C mlx >/dev/null 2>&1
+
+libft:
+	@make -s -C $(LIBFT_DIR) >/dev/null 2>&1
+
+.c.o:
+	@cc $(CFLAGS) -c -o $@ $< -g
 
 clean :
-	rm -f $(OBJETS)
-	make -C mlx clean
+	@printf "$(YELLOW)CLEANING ".o" FILES$(WHITE)"
+	@rm -f $(OBJETS)
+	@make -C mlx clean >/dev/null
+	@make -C $(LIBFT_DIR) clean >/dev/null
+	@printf "\r$(RED)".o" FILES ARE CLEANED$(WHITE)"
 
-fclean :
-	rm -f $(NAME)
-	rm -f $(OBJETS)
-	make -C mlx clean
+fclean : clean
+	@printf "\r$(YELLOW)CLEANING MLX AND LIBFT$(WHITE)"
+	@make -C mlx clean >/dev/null
+	@make -C $(LIBFT_DIR) fclean >/dev/null
+	@rm -f ${NAME}
+	@printf "\r$(YELLOW)FCLEANED WITH SUCCESS$(WHITE)"
 
 re : fclean all
-	make -C mlx re
 
 .PHONY : all clean fclean re
+
+debug: $(OBJETS)
+	make -C mlx
+	make -C $(LIBFT_DIR)
+	cc $(CFLAGS) -o $(NAME) $(OBJETS) -Lmlx -lmlx -L/usr/lib -lXext -lX11 -g $(LIBFT_DIR)$(LIBFT)
+
+samael:
+	@echo "                               (\_/)                                        "
+	@echo "                               (0.0)                                        "
+	@echo "                               />*<\                                        "
+	@echo "         ******\   ******\  **\      **\  ******\  ********\ **\            "
+	@echo "        **  __**\ **  __**\ ***\    *** |**  __**\ **  _____|** |           "
+	@echo "        ** /  \__|** /  ** |****\  **** |** /  ** |** |      ** |           "
+	@echo "        \******\  ******** |**\**\** ** |******** |*****\    ** |           "
+	@echo "         \____**\ **  __** |** \***  ** |**  __** |**  __|   ** |           "
+	@echo "        **\   ** |** |  ** |** |\*  /** |** |  ** |** |      ** |           "
+	@echo "        \******  |** |  ** |** | \_/ ** |** |  ** |********\ ********\      "
+	@echo "         \______/ \__|  \__|\__|     \__|\__|  \__|\________|\________|     "
+
