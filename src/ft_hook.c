@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:44 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/04/05 12:50:14 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/04/05 18:47:24 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	move_player(t_vars *data, int dx, int dy)
 	if (is_valid_move(data, new_x, new_y))
 	{
 		data->cpt++;
-		ft_printf(" movements: %i\nScore: %d\n", data->cpt, data->mc->c);
+		ft_printf("\r movements: %i & Score: %d", data->cpt * 1, data->mc->c);
 		ft_print_mlx(data, data->floor->img, data->mc->y * data->floor->lenght,
 			data->mc->x * data->floor->height);
 		data->mc->x = new_x;
