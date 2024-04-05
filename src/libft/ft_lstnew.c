@@ -6,13 +6,13 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 14:46:17 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/03/29 21:11:49 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/04/03 12:27:14 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstnew(int content)
+t_list	*ft_lstnew(void *content)
 {
 	t_list	*node;
 

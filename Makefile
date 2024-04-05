@@ -4,7 +4,7 @@ MLXFLAGS = -Lmlx -lmlx -L/usr/lib/X11 -lXext -lX11
 
 NAME = so_long
 
-SRC = src/main.c src/ft_map.c src/ft_hook.c src/ft_utils.c src/ft_check.c src/ft_map_utils.c
+SRC = src/main.c src/ft_map.c src/ft_hook.c src/ft_utils.c src/ft_check.c src/ft_map_utils.c src/ft_print_things.c
 
 LIBFT_DIR = ./src/libft/
 
@@ -19,6 +19,8 @@ GREEN=\033[0;32m
 YELLOW=\033[0;33m
 
 WHITE=\033[0m
+
+BLUE = \033[0;36m
 
 $(NAME) : $(OBJETS)
 	@printf "$(YELLOW) TRYING TO COMPILE SO_LONG$(WHITE)"
@@ -54,6 +56,10 @@ fclean : clean
 
 re : fclean all
 
+test : re
+	@norminette src
+	@valgrind --leak-check=full --show-leak-kinds=all -s --track-origins=yes ./$(NAME) maps/map0.ber
+
 .PHONY : all clean fclean re
 
 debug: $(OBJETS)
@@ -62,7 +68,7 @@ debug: $(OBJETS)
 	cc $(CFLAGS) -o $(NAME) $(OBJETS) -Lmlx -lmlx -L/usr/lib -lXext -lX11 -g $(LIBFT_DIR)$(LIBFT)
 
 samael:
-	@echo "                               (\_/)                                        "
+	@echo "$(BLUE)                               (\_/)                                        "
 	@echo "                               (0.0)                                        "
 	@echo "                               />*<\                                        "
 	@echo "         ******\   ******\  **\      **\  ******\  ********\ **\            "
@@ -72,5 +78,5 @@ samael:
 	@echo "         \____**\ **  __** |** \***  ** |**  __** |**  __|   ** |           "
 	@echo "        **\   ** |** |  ** |** |\*  /** |** |  ** |** |      ** |           "
 	@echo "        \******  |** |  ** |** | \_/ ** |** |  ** |********\ ********\      "
-	@echo "         \______/ \__|  \__|\__|     \__|\__|  \__|\________|\________|     "
+	@echo "         \______/ \__|  \__|\__|     \__|\__|  \__|\________|\________|     $(WHITE)"
 

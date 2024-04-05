@@ -6,15 +6,21 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 13:12:33 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/03/29 21:42:32 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/04/05 13:54:30 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-t_Bool	ft_printerror(char *error_msg)
+t_Bool	ft_check_filename(char *dir)
 {
-	ft_printf("Error\n%s", error_msg);
+	int	i;
+
+	i = 0;
+	while (dir[i])
+		i++;
+	if (i >= 4)
+		return (ft_strncmp(dir + i - 4, ".ber", 4) == 0);
 	return (False);
 }
 

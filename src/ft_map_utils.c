@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:40:56 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/03/13 14:15:39 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/04/05 12:53:37 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ t_Bool	ft_floodfill_check(char **map, int size, int c)
 	return (True);
 }
 
-int	ft_count_line(t_map *tmap,char *path)
+int	ft_count_line(t_map *tmap, char *path)
 {
 	int		fd;
 	char	*line;
@@ -99,7 +99,7 @@ int	ft_count_line(t_map *tmap,char *path)
 	if (!line)
 		n = -1;
 	if (ft_strlen(line) > 50)
-		return -1;
+		return (-1);
 	while (line)
 	{
 		free(line);

@@ -6,19 +6,15 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:30:39 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/03/29 21:28:36 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/04/05 13:53:38 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-# ifndef MAP
-#  define MAP "./map0.ber"
-# endif
-
-# include "libft/libft.h"
 # include "../mlx/mlx.h"
+# include "libft/libft.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
 # include <fcntl.h>
@@ -41,6 +37,9 @@
 # define ERROR8 "Usage: ./so_long [map]\n"
 # define ERROR9 "unable to open the map\n"
 # define ERROR10 "first line is empty\n"
+# define ERROR11 "map should be a \".ber\" file\n"
+# define ERROR12 "error when trying to convert an assets\n"
+# define ERROR13 "all assets are not the same size\n"
 
 typedef enum Bool
 {
@@ -98,6 +97,7 @@ t_Bool			ft_check1(char *s);
 t_Bool			ft_check2(t_map *data, char *s, t_Bool last_line);
 t_Bool			ft_check3(char *s);
 t_Bool			ft_check4(char *s);
+t_Bool			ft_check_filename(char *dir);
 t_Bool			ft_floodfill_check(char **map, int size, int c);
 void			ft_create_map(t_vars *data);
 void			ft_print_mlx(t_vars *data, void *img, int x, int y);
@@ -107,5 +107,7 @@ char			**ft_doubletabdup(char **tab, int size);
 t_Bool			ft_printerror(char *error_msg);
 int				ft_count_line(t_map *tmap, char *path);
 void			ft_freeandexit(t_map *data);
+void			ft_win(t_vars *data);
+t_Bool			ft_check_texture(t_vars *data);
 
 #endif

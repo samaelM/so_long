@@ -6,16 +6,23 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:56:52 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/03/29 21:50:50 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/04/05 13:54:33 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	ft_print_mlx(t_vars *data, void *img, int x, int y)
+t_Bool	ft_check_texture(t_vars *data)
 {
-	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img, ft_min(x,
-			data->map->lenght * 80), ft_min(y, data->map->size * 80));
+	if (data->wall->height == data->wall->lenght
+		&& data->wall->height == data->coin->height
+		&& data->wall->height == data->coin->lenght
+		&& data->wall->height == data->exit->height
+		&& data->wall->height == data->exit->lenght
+		&& data->wall->height == data->mc->texture->height
+		&& data->wall->height == data->mc->texture->lenght)
+		return (True);
+	return (False);
 }
 
 t_data	*ft_load_texture(t_vars *data, t_data **image, char *direction)
@@ -44,19 +51,25 @@ void	ft_texture_init(t_vars *data)
 	data->coin = NULL;
 	data->floor = NULL;
 	data->wall = NULL;
-	data->mc = NULL;
 	mc = (t_mc *)malloc(sizeof(*mc));
 	if (!mc)
 		on_destroy(data);
 	data->mc = mc;
 	data->mc->texture = NULL;
 	if (!(ft_load_texture(data, &data->wall, "assets/wall.xpm")
-			&& ft_load_texture(data, &data->mc->texture,
-				"assets/mc.xpm") && ft_load_texture(data,
-				&data->floor, "assets/floor.xpm") && ft_load_texture(data,
-				&data->coin, "assets/coins.xpm") && ft_load_texture(data,
-				&data->exit, "assets/exit.xpm")))
+			&& ft_load_texture(data, &data->mc->texture, "assets/mc.xpm")
+			&& ft_load_texture(data, &data->floor, "assets/floor.xpm")
+			&& ft_load_texture(data, &data->coin, "assets/coins.xpm")
+			&& ft_load_texture(data, &data->exit, "assets/exit.xpm")))
+	{
+		ft_printerror(ERROR12);
 		on_destroy(data);
+	}
+	if (!ft_check_texture(data))
+	{
+		ft_printerror(ERROR12);
+		on_destroy(data);
+	}
 }
 
 int	main(int ac, char **av)
@@ -65,15 +78,17 @@ int	main(int ac, char **av)
 
 	if (ac != 2)
 		return (ft_printerror(ERROR8));
+	if (!ft_check_filename(av[1]))
+		return (ft_printerror(ERROR11));
 	data.map = ft_convmap(av[1]);
 	data.mlx_ptr = mlx_init();
 	if (!data.mlx_ptr)
-		return (1);
-	data.win_ptr = mlx_new_window(data.mlx_ptr, data.map->lenght * 80,
-			data.map->size * 80, WIN_NAME);
+		return (on_destroy(&data));
+	ft_texture_init(&data);
+	data.win_ptr = mlx_new_window(data.mlx_ptr, data.map->lenght
+			* data.wall->lenght, data.map->size * data.wall->lenght, WIN_NAME);
 	if (!data.win_ptr)
 		return (free(data.mlx_ptr), 1);
-	ft_texture_init(&data);
 	ft_create_map(&data);
 	data.mc->c = 0;
 	data.cpt = 0;

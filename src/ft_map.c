@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 16:05:18 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/03/13 14:16:10 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/04/02 14:17:25 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,10 @@ char	**ft_copymap(t_map *tmap, char *path)
 	int		nline;
 	int		fd;
 	int		i;
+
 	nline = ft_count_line(tmap, path);
 	if (nline == -1)
-		(ft_printerror(ERROR10),ft_freeandexit(tmap));
+		(ft_printerror(ERROR10), ft_freeandexit(tmap));
 	map = (char **)malloc(nline * sizeof(char *));
 	if (!map)
 		ft_freeandexit(tmap);

@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:33:44 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/03/29 21:43:47 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/04/05 12:50:14 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@ int	is_valid_move(t_vars *data, int x, int y)
 {
 	return ((data->map->map[x][y] == 'E' && data->map->c == 0)
 		|| (data->map->map[x][y] != '1' && data->map->map[x][y] != 'E'));
-}
-
-void	ft_win(t_vars *data)
-{
-	ft_printf("\n\n\n\nGG ma boy you won\n\n\n\n");
-	on_destroy(data);
 }
 
 void	move_player(t_vars *data, int dx, int dy)
@@ -96,10 +90,14 @@ int	on_destroy(t_vars *data)
 	if (data->map)
 		ft_freetab(data->map->map, data->map->size);
 	free(data->map);
-	ft_freetextures(data);
-	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-	mlx_destroy_display(data->mlx_ptr);
-	free(data->mlx_ptr);
+	if (data->mlx_ptr)
+	{
+		ft_freetextures(data);
+		if (data->win_ptr)
+			mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+		mlx_destroy_display(data->mlx_ptr);
+		free(data->mlx_ptr);
+	}
 	exit(0);
 	return (0);
 }
