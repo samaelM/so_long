@@ -1,7 +1,7 @@
 # MLX
-./mlx/
+mlx/
 
 # compiled files
-./src/*.o
-./src/libft/*.o
-./so_long
+src/*.o
+src/libft/*.o
+so_long
