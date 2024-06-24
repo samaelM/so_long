@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 14:49:55 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/04/02 14:03:35 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:08:04 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void				*ft_memcpy(void *dest, const void *src, size_t n);
 void				*ft_memmove(void *dest, const void *src, size_t n);
 void				*ft_memchr(const void *s, int c, size_t n);
 void				*ft_calloc(size_t nmemb, size_t size);
-char				*get_next_line(int fd);
 size_t				ft_strlen(const char *s);
 size_t				ft_strlcpy(char *dst, const char *src, size_t dstsize);
 void				*ft_memset(void *p, int i, size_t len);
@@ -82,7 +81,9 @@ char				*ft_strdup(const char *src);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 int					ft_strchr2(const t_list *s, int c);
-char				*ft_line_cleaner(t_list **s);
+// GET_NEXT_LINE
+char				*get_next_line(int fd);
+// PRINTF
 int					ft_printf(const char *txt, ...);
 int					ft_ltoa_hexa_size(unsigned long long nb);
 char				*ft_ltoa_hexa(unsigned long long n, char format);

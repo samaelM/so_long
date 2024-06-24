@@ -6,18 +6,11 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:35:28 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/02/14 17:12:32 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/05/30 14:16:29 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-int	ft_max(int a, int b)
-{
-	if (a > b)
-		return (a);
-	return (b);
-}
 
 int	ft_min(int a, int b)
 {
@@ -67,7 +60,7 @@ char	**ft_doubletabdup(char **tab, int size)
 		j = 0;
 		dest[i] = malloc(ft_strlen(tab[i]) + 1 * sizeof(char));
 		if (!dest[i])
-			return (ft_freetab(dest, j), NULL);
+			return (ft_freetab(dest, i), NULL);
 		while (tab[i][j])
 		{
 			dest[i][j] = tab[i][j];

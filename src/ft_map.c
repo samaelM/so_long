@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 16:05:18 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/04/02 14:17:25 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/06/12 16:49:52 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_Bool	ft_check(t_map *data)
 		return (False);
 	temp = ft_doubletabdup(data->map, data->size);
 	if (!temp)
-		return (False);
+		return (ft_printerror(ERROR14), False);
 	if (!ft_floodfill_check(temp, data->size, data->c))
 		return (ft_freetab(temp, data->size), False);
 	return (ft_freetab(temp, data->size), True);
@@ -54,6 +54,8 @@ char	**ft_copymap(t_map *tmap, char *path)
 	if (!map)
 		ft_freeandexit(tmap);
 	fd = open(path, O_RDWR);
+	if (fd == -1)
+		return (ft_printerror(ERROR14), free(map), free(tmap), exit(1), NULL);
 	i = 0;
 	map[i++] = get_next_line(fd);
 	if (map[0] == NULL)
@@ -64,9 +66,7 @@ char	**ft_copymap(t_map *tmap, char *path)
 		if (map[i - 1] == NULL)
 			(ft_freetab(map, ft_min(0, i - 2)), ft_freeandexit(tmap));
 	}
-	close(fd);
-	tmap->size = nline;
-	return (map);
+	return (close(fd), tmap->size = nline, map);
 }
 
 t_map	*ft_convmap(char *path)
@@ -82,6 +82,12 @@ t_map	*ft_convmap(char *path)
 	tmap->c = 0;
 	tmap->e = 0;
 	tmap->p = 0;
+	if (!tmap->map)
+	{
+		ft_printerror(ERROR14);
+		ft_freetab(tmap->map, tmap->size);
+		ft_freeandexit(tmap);
+	}
 	if (!tmap->map || !ft_check(tmap))
 	{
 		ft_freetab(tmap->map, tmap->size);

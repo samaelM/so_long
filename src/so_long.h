@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:30:39 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/04/05 13:53:38 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:17:36 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 # include <unistd.h>
 
 # define WIN_NAME "42 lore"
-# define MAX 32
-# define MAX2 17
 
 # define ERROR0 "map must have a rectangular shape\n"
 # define ERROR1 "at least one character is not correct\n"
@@ -40,6 +38,7 @@
 # define ERROR11 "map should be a \".ber\" file\n"
 # define ERROR12 "error when trying to convert an assets\n"
 # define ERROR13 "all assets are not the same size\n"
+# define ERROR14 "a problem occured (failed function, bad allocation ...)\n"
 
 typedef enum Bool
 {
@@ -88,7 +87,6 @@ typedef struct s_vars
 
 int				on_destroy(t_vars *data);
 int				on_keypress(int keysym, t_vars *data);
-int				ft_max(int a, int b);
 int				ft_min(int a, int b);
 size_t			ft_strlennl(char *s);
 t_map			*ft_convmap(char *path);

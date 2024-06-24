@@ -6,7 +6,7 @@
 /*   By: maemaldo <maemaldo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:06:08 by maemaldo          #+#    #+#             */
-/*   Updated: 2024/04/02 14:08:48 by maemaldo         ###   ########.fr       */
+/*   Updated: 2024/05/31 13:51:19 by maemaldo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 t_Bool	ft_printerror(char *error_msg)
 {
-	ft_printf("Error\n%s", error_msg);
+	ft_putstr_fd("Error\n", 2);
+	ft_putstr_fd(error_msg, 2);
 	return (False);
 }
 
@@ -24,13 +25,6 @@ void	ft_win(t_vars *data)
 	on_destroy(data);
 }
 
-/*
-ft_print_mlx
-
-print an image on the window
-
-return void
-*/
 void	ft_print_mlx(t_vars *data, void *img, int x, int y)
 {
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img, ft_min(x,
